@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 开关属性 -->
+    <declare-styleable name="SwitcherView">
+        <attr name="switcher_text_size" format="dimension" />
+        <attr name="switcher_bg_color" format="color" />
+        <attr name="switcher_fg_color" format="color" />
+        <attr name="switcher_border_color" format="color" />
+        <attr name="switcher_border_width" format="dimension" />
+        <attr name="switcher_text_color_default" format="color" />
+        <attr name="switcher_text_color_selected" format="color" />
+        <attr name="switcher_left_text" format="string" />
+        <attr name="switcher_right_text" format="string" />
+    </declare-styleable>
+</resources>
