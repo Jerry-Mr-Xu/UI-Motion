@@ -188,6 +188,12 @@ public class SwitcherView extends View implements View.OnClickListener
 		// 将边框宽度去除
 		contentRect.set(borderRect);
 		contentRect.inset(borderWidth / 2, borderWidth / 2);
+	}
+
+	@Override
+	protected void onSizeChanged(int w, int h, int oldw, int oldh)
+	{
+		super.onSizeChanged(w, h, oldw, oldh);
 		initAnim();
 	}
 

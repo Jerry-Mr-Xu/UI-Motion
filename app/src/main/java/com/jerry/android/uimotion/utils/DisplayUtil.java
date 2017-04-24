@@ -3,6 +3,8 @@ package com.jerry.android.uimotion.utils;
 import android.content.Context;
 import android.util.DisplayMetrics;
 
+import com.jerry.android.uimotion.MyApplication;
+
 public class DisplayUtil
 {
 	/**

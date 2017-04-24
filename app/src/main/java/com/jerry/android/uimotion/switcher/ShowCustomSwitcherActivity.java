@@ -9,12 +9,12 @@ import com.jerry.android.uimotion.R;
 import com.jerry.android.uimotion.utils.ToastUtil;
 
 /**
- * 展示开关的界面
+ * 自定义Switcher展示页面
  * <p>
  * Created by Jerry on 2017/4/18.
  */
 
-public class SwitcherShowActivity extends AppCompatActivity implements SwitcherView.OnCheckedStateChangedListener
+public class ShowCustomSwitcherActivity extends AppCompatActivity implements SwitcherView.OnCheckedStateChangedListener
 {
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState)

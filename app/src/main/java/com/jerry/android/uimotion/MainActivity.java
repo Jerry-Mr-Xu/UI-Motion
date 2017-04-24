@@ -5,7 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.jerry.android.uimotion.switcher.SwitcherShowActivity;
+import com.jerry.android.uimotion.switcher.ShowCustomSwitcherActivity;
+import com.jerry.android.uimotion.textview.ShowCustomTextViewActivity;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -22,7 +23,11 @@ public class MainActivity extends AppCompatActivity
 		switch (view.getId())
 		{
 			case R.id.btn_show_switcher:
-				startActivity(new Intent(MainActivity.this, SwitcherShowActivity.class));
+				startActivity(new Intent(MainActivity.this, ShowCustomSwitcherActivity.class));
+				break;
+
+			case R.id.btn_show_text_view:
+				startActivity(new Intent(MainActivity.this, ShowCustomTextViewActivity.class));
 				break;
 
 			default:

@@ -17,7 +17,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".switcher.SwitcherShowActivity" />
+        <activity android:name=".switcher.ShowCustomSwitcherActivity" />
+        <activity android:name=".textview.ShowCustomTextViewActivity" />
     </application>
 
 </manifest>

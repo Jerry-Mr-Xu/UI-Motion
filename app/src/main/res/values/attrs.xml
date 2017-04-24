@@ -13,4 +13,18 @@
         <attr name="switcher_left_text" format="string" />
         <attr name="switcher_right_text" format="string" />
     </declare-styleable>
+
+    <declare-styleable name="ColorTrackTextView">
+        <attr name="color_track_text" format="string" />
+        <attr name="color_track_text_size" format="dimension" />
+        <attr name="color_track_origin_text_color" format="color" />
+        <attr name="color_track_changed_text_color" format="color" />
+        <attr name="color_track_change_progress" format="fraction" />
+        <attr name="color_track_change_direction">
+            <enum name="left" value="0" />
+            <enum name="right" value="1" />
+            <enum name="top" value="2" />
+            <enum name="bottom" value="3" />
+        </attr>
+    </declare-styleable>
 </resources>
