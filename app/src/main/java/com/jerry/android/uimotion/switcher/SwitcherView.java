@@ -9,6 +9,8 @@ import android.graphics.RectF;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 
 import com.jerry.android.uimotion.R;
 import com.jerry.android.uimotion.utils.DisplayUtil;
@@ -35,8 +37,10 @@ public class SwitcherView extends View implements View.OnClickListener
 	private int bgColor, fgColor, borderColor, textColorDefault, textColorSelected;
 	private String leftText, rightText;
 
-	private float selectorOffset = 0;
-	private ValueAnimator selectorOffsetAnim;
+	private float selectorLeftOffset = 0;
+	private float selectorRightOffset = 0;
+	private ValueAnimator selectorLeftOffsetAnim;
+	private ValueAnimator selectorRightOffsetAnim;
 
 	private RectF contentRect = new RectF(), borderRect = new RectF();
 	private Paint textPaint, borderPaint, bgPaint, fgPaint;
@@ -78,13 +82,25 @@ public class SwitcherView extends View implements View.OnClickListener
 
 	private void initAnim()
 	{
-		selectorOffsetAnim = ValueAnimator.ofFloat(0, contentRect.width() / 2f);
-		selectorOffsetAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener()
+		selectorLeftOffsetAnim = ValueAnimator.ofFloat(0, contentRect.width() / 2f);
+		selectorLeftOffsetAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener()
 		{
 			@Override
 			public void onAnimationUpdate(ValueAnimator animation)
 			{
-				selectorOffset = (float) animation.getAnimatedValue();
+				selectorLeftOffset = (float) animation.getAnimatedValue();
+				invalidate();
+			}
+		});
+
+		// TODO 需要优化成一个动画
+		selectorRightOffsetAnim = ValueAnimator.ofFloat(0, contentRect.width() / 2f);
+		selectorRightOffsetAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener()
+		{
+			@Override
+			public void onAnimationUpdate(ValueAnimator animation)
+			{
+				selectorRightOffset = (float) animation.getAnimatedValue();
 				invalidate();
 			}
 		});
@@ -116,16 +132,16 @@ public class SwitcherView extends View implements View.OnClickListener
 	protected void onDraw(Canvas canvas)
 	{
 		canvas.drawRoundRect(contentRect, contentRect.height() / 2, contentRect.height() / 2, bgPaint);
-		canvas.drawRoundRect(contentRect.left + selectorOffset, contentRect.top, contentRect.centerX() + selectorOffset, contentRect.bottom, contentRect.height() / 2, contentRect.height() / 2, fgPaint);
+		canvas.drawRoundRect(contentRect.left + selectorLeftOffset, contentRect.top, contentRect.centerX() + selectorRightOffset, contentRect.bottom, contentRect.height() / 2, contentRect.height() / 2, fgPaint);
 		canvas.drawRoundRect(borderRect, borderRect.height() / 2, borderRect.height() / 2, borderPaint);
 
 		Paint.FontMetrics fm = textPaint.getFontMetrics();
 		int textOffsetY = (int) Math.ceil(-fm.descent - fm.ascent) / 2;
-		textPaint.setColor(argbEvaluate(selectorOffset / contentRect.width() * 2f, textColorSelected, textColorDefault));
+		textPaint.setColor(argbEvaluate(selectorLeftOffset / contentRect.width() * 2f, textColorSelected, textColorDefault));
 		canvas.drawText(leftText, contentRect.left + contentRect.width() / 4 - textPaint.measureText(leftText) / 2, contentRect.centerY() + textOffsetY, textPaint);
 		textPaint.setColor(textColorDefault);
 
-		textPaint.setColor(argbEvaluate(1 - selectorOffset / contentRect.width() * 2f, textColorSelected, textColorDefault));
+		textPaint.setColor(argbEvaluate(1 - selectorLeftOffset / contentRect.width() * 2f, textColorSelected, textColorDefault));
 		canvas.drawText(rightText, contentRect.left + contentRect.width() * 3 / 4 - textPaint.measureText(rightText) / 2, contentRect.centerY() + textOffsetY, textPaint);
 		textPaint.setColor(textColorDefault);
 	}
@@ -202,13 +218,21 @@ public class SwitcherView extends View implements View.OnClickListener
 	{
 		if (isLeft)
 		{
-			selectorOffsetAnim.setFloatValues((float) selectorOffsetAnim.getAnimatedValue(), contentRect.width() / 2f);
-			selectorOffsetAnim.start();
+			selectorLeftOffsetAnim.setFloatValues((float) selectorLeftOffsetAnim.getAnimatedValue(), contentRect.width() / 2f);
+			selectorLeftOffsetAnim.setInterpolator(new AccelerateInterpolator());
+			selectorLeftOffsetAnim.start();
+			selectorRightOffsetAnim.setFloatValues((float) selectorRightOffsetAnim.getAnimatedValue(), contentRect.width() / 2f);
+			selectorRightOffsetAnim.setInterpolator(new DecelerateInterpolator());
+			selectorRightOffsetAnim.start();
 		}
 		else
 		{
-			selectorOffsetAnim.setFloatValues((float) selectorOffsetAnim.getAnimatedValue(), 0f);
-			selectorOffsetAnim.start();
+			selectorLeftOffsetAnim.setFloatValues((float) selectorLeftOffsetAnim.getAnimatedValue(), 0f);
+			selectorLeftOffsetAnim.setInterpolator(new DecelerateInterpolator());
+			selectorLeftOffsetAnim.start();
+			selectorRightOffsetAnim.setFloatValues((float) selectorRightOffsetAnim.getAnimatedValue(), 0f);
+			selectorRightOffsetAnim.setInterpolator(new AccelerateInterpolator());
+			selectorRightOffsetAnim.start();
 		}
 
 		isLeft = !isLeft;
